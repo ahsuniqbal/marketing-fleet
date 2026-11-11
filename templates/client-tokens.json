@@ -1,0 +1,89 @@
+{
+  "$schema-note": "Single visual source of truth. Read by studio/creatives (React) and studio/video (Remotion). Replace every TBD.",
+  "meta": {
+    "client": "TBD",
+    "version": "1.0.0",
+    "updated": "TBD"
+  },
+  "color": {
+    "palette": {
+      "brand-500": "TBD",
+      "brand-700": "TBD",
+      "accent-500": "TBD",
+      "neutral-0": "#FFFFFF",
+      "neutral-100": "TBD",
+      "neutral-500": "TBD",
+      "neutral-900": "TBD"
+    },
+    "bg": "{color.palette.neutral-0}",
+    "surface": "{color.palette.neutral-100}",
+    "text": "{color.palette.neutral-900}",
+    "textMuted": "{color.palette.neutral-500}",
+    "primary": "{color.palette.brand-500}",
+    "onPrimary": "{color.palette.neutral-0}",
+    "accent": "{color.palette.accent-500}",
+    "overlay": "rgba(0, 0, 0, 0.45)"
+  },
+  "font": {
+    "family": {
+      "display": "TBD, system-ui, sans-serif",
+      "body": "TBD, system-ui, sans-serif"
+    },
+    "weight": {
+      "regular": 400,
+      "medium": 500,
+      "bold": 700
+    },
+    "size": {
+      "display": 96,
+      "headline": 64,
+      "subhead": 40,
+      "body": 32,
+      "caption": 24,
+      "legal": 18
+    },
+    "lineHeight": {
+      "tight": 1.1,
+      "normal": 1.35
+    },
+    "minSize": 18
+  },
+  "space": {
+    "xs": 8,
+    "sm": 16,
+    "md": 32,
+    "lg": 48,
+    "xl": 72,
+    "safe": 64
+  },
+  "radius": {
+    "sm": 8,
+    "md": 16,
+    "lg": 32,
+    "pill": 999
+  },
+  "shadow": {
+    "card": "0 8px 24px rgba(0, 0, 0, 0.12)"
+  },
+  "motion": {
+    "duration": {
+      "fast": 200,
+      "base": 400,
+      "slow": 800
+    },
+    "easing": {
+      "standard": [0.2, 0, 0, 1],
+      "enter": [0, 0, 0.2, 1],
+      "exit": [0.4, 0, 1, 1]
+    },
+    "logoReveal": 1200
+  },
+  "caption": {
+    "font": "{font.family.display}",
+    "size": 56,
+    "color": "{color.palette.neutral-0}",
+    "highlight": "{color.accent}",
+    "stroke": "rgba(0, 0, 0, 0.6)",
+    "maxWordsPerLine": 4
+  }
+}

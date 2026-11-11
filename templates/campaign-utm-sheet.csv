@@ -1,0 +1,2 @@
+ad_name,deliverable_id,variant,platform,base_url,utm_source,utm_medium,utm_campaign,utm_content,utm_term,full_url,checked
+<client>-<NN>-<adset>-<deliverable-id>-v1,<NN>-static-01,v1,instagram,https://example.com/landing,instagram,paid_social,<client>-<NN>-<slug>,<NN>-static-01-v1,,https://example.com/landing?utm_source=instagram&utm_medium=paid_social&utm_campaign=<client>-<NN>-<slug>&utm_content=<NN>-static-01-v1,

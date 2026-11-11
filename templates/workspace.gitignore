@@ -1,0 +1,11 @@
+# marketing-fleet workspace — append to the agency workspace's .gitignore
+.DS_Store
+node_modules/
+.env
+.env.local
+
+# Client media — raw footage and render intermediates stay out of git
+clients/*/campaigns/*/video/raw/
+clients/*/campaigns/*/video/proxies/
+clients/*/campaigns/*/video/frames/
+clients/*/studio/video/out/

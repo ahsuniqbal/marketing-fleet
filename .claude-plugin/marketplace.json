@@ -1,0 +1,14 @@
+{
+  "name": "marketing-fleet",
+  "description": "A campaign-by-campaign marketing agency pipeline for Claude Code: role agents, stage skills, and a document spine that carries a client from onboarding to launched, measured campaigns.",
+  "owner": {
+    "name": "Ahsun Iqbal"
+  },
+  "plugins": [
+    {
+      "name": "marketing-fleet",
+      "source": "./",
+      "description": "Marketing agency pipeline: account-manager, market-researcher, brand-strategist, campaign-strategist, copywriter, graphic-designer, video-producer, performance-marketer, brand-reviewer, analytics-reporter."
+    }
+  ]
+}

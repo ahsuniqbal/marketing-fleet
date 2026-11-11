@@ -1,0 +1,26 @@
+{
+  "deliverable_id": "<NN>-<format>-<seq>",
+  "source_script": "copy/scripts/<deliverable-id>.md",
+  "fps": 30,
+  "target_duration_s": 30,
+  "ratios": ["9:16", "1:1", "16:9"],
+  "audio": {
+    "music": { "file": "video/assets/<track>.mp3", "license": "see video/assets.md", "gain_db": -18 },
+    "loudness_lufs": -14
+  },
+  "entries": [
+    {
+      "order": 1,
+      "clip": "raw/<file>.mp4",
+      "in": "00:00:12.400",
+      "out": "00:00:15.100",
+      "purpose": "hook",
+      "log_ref": "footage-log.md#<clip-id>",
+      "transcript": "<exact words spoken in this range>",
+      "overlay": { "type": "text", "text": "<on-screen text>", "component": "LowerThird" },
+      "reframe": "track-subject"
+    }
+  ],
+  "brand": { "intro": "BrandIntro", "outro": "BrandOutro", "captions": "Captions" },
+  "changelog": []
+}
