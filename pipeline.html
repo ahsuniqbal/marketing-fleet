@@ -1,0 +1,1156 @@
+<title>Marketing Fleet Pipeline</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --paper:      #F1F2EE;
+    --surface:    #FAFAF8;
+    --surface-2:  #E9EBE5;
+    --ink:        #14181A;
+    --ink-soft:   #59635F;
+    --ink-faint:  #8A928D;
+    --rule:       #DBDDD5;
+    --rule-soft:  #E6E8E1;
+    --blue:       #1F4E79;
+    --blue-soft:  #E2EAF1;
+    --amber:      #96600A;
+    --amber-soft: #F4E8D0;
+    --amber-line: #C89029;
+
+    --f-head: "IBM Plex Sans Condensed", "Helvetica Neue", Arial, sans-serif;
+    --f-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+    --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 72px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #14171A;
+      --surface:    #1B1F22;
+      --surface-2:  #23282B;
+      --ink:        #E7EAE4;
+      --ink-soft:   #9BA39D;
+      --ink-faint:  #6E7772;
+      --rule:       #2E3438;
+      --rule-soft:  #252A2E;
+      --blue:       #8CBAE3;
+      --blue-soft:  #1D2A36;
+      --amber:      #DFAB4E;
+      --amber-soft: #2C2418;
+      --amber-line: #8A6520;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #14171A;
+    --surface:    #1B1F22;
+    --surface-2:  #23282B;
+    --ink:        #E7EAE4;
+    --ink-soft:   #9BA39D;
+    --ink-faint:  #6E7772;
+    --rule:       #2E3438;
+    --rule-soft:  #252A2E;
+    --blue:       #8CBAE3;
+    --blue-soft:  #1D2A36;
+    --amber:      #DFAB4E;
+    --amber-soft: #2C2418;
+    --amber-line: #8A6520;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .shell {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: var(--s-6) var(--s-5) var(--s-8);
+    gap: var(--s-7);
+  }
+  @media (min-width: 1000px) {
+    .shell {
+      grid-template-columns: 168px minmax(0, 1fr);
+      column-gap: var(--s-7);
+      padding: var(--s-7) var(--s-6) var(--s-8);
+    }
+  }
+
+  /* ---- rail ---- */
+  .rail { display: none; }
+  @media (min-width: 1000px) {
+    .rail {
+      display: block;
+      position: sticky;
+      top: var(--s-6);
+      align-self: start;
+      grid-row: 1 / span 2;
+      border-top: 2px solid var(--ink);
+      padding-top: var(--s-3);
+    }
+  }
+  .rail-title {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: var(--s-3);
+  }
+  .rail nav { display: flex; flex-direction: column; gap: 1px; }
+  .rail a {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 3px 0 3px var(--s-2);
+    border-left: 2px solid var(--rule);
+    transition: color .12s, border-color .12s;
+  }
+  .rail a:hover { color: var(--ink); border-left-color: var(--blue); }
+  .rail a:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+  main { grid-column: 1 / -1; min-width: 0; }
+  @media (min-width: 1000px) { main { grid-column: 2; } }
+
+  /* ---- masthead ---- */
+  .masthead { border-bottom: 2px solid var(--ink); padding-bottom: var(--s-5); }
+  .eyebrow {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: var(--s-3);
+  }
+  h1 {
+    font-family: var(--f-head);
+    font-weight: 700;
+    font-size: clamp(34px, 6vw, 56px);
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0 0 var(--s-4);
+    text-wrap: balance;
+  }
+  .standfirst {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin: 0 0 var(--s-5);
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-5);
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+  .meta b { color: var(--ink); font-weight: 600; }
+
+  /* ---- sections ---- */
+  section { margin-top: var(--s-8); scroll-margin-top: var(--s-5); }
+  h2 {
+    font-family: var(--f-head);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 0 0 var(--s-2);
+    padding-bottom: var(--s-2);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s-4);
+  }
+  h2 .h2-note {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: var(--ink-faint);
+    font-weight: 400;
+  }
+  .lede { color: var(--ink-soft); max-width: 66ch; margin: var(--s-4) 0 var(--s-5); }
+  p { max-width: 66ch; }
+
+  /* ---- rules ---- */
+  .rules { display: grid; gap: var(--s-4); margin-top: var(--s-5); }
+  @media (min-width: 720px) { .rules { grid-template-columns: repeat(3, 1fr); } }
+  .rule-card {
+    border-top: 2px solid var(--blue);
+    padding-top: var(--s-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+  .rule-card h3 {
+    font-family: var(--f-head);
+    font-size: 19px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .rule-card p { margin: 0; font-size: 14px; color: var(--ink-soft); }
+
+  /* ---- spine tree ---- */
+  .tree {
+    font-family: var(--f-mono);
+    font-size: 12.5px;
+    line-height: 1.85;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: var(--s-5);
+    overflow-x: auto;
+    margin-top: var(--s-5);
+    white-space: pre;
+    color: var(--ink-soft);
+  }
+  .tree b { color: var(--ink); font-weight: 600; }
+  .tree i { color: var(--amber); font-style: normal; }
+  .tree .c { color: var(--ink-faint); }
+
+  /* ---- diagram ---- */
+  .diagram {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: var(--s-5);
+    overflow-x: auto;
+    margin-top: var(--s-5);
+  }
+  .diagram pre { margin: 0; }
+
+  /* ---- stage list ---- */
+  .stages { margin-top: var(--s-5); border-top: 1px solid var(--rule); }
+
+  .stage {
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 0 var(--s-4);
+    padding: var(--s-4) 0;
+    border-bottom: 1px solid var(--rule-soft);
+    align-items: start;
+  }
+  @media (min-width: 800px) {
+    .stage { grid-template-columns: 52px 150px minmax(0, 1fr); }
+  }
+  .stage-code {
+    font-family: var(--f-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
+    font-variant-numeric: tabular-nums;
+    padding-top: 1px;
+  }
+  .stage-agent {
+    font-family: var(--f-mono);
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    letter-spacing: 0.01em;
+    padding-top: 2px;
+  }
+  @media (max-width: 799px) {
+    .stage-agent { grid-column: 2; margin-bottom: var(--s-1); }
+    .stage-body { grid-column: 2; }
+  }
+  .stage-body { min-width: 0; }
+  .stage-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-bottom: var(--s-2);
+  }
+  .skill {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--ink);
+    background: var(--blue-soft);
+    border: 1px solid transparent;
+    padding: 1px 6px;
+  }
+  .stage-out {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  .stage-out code {
+    font-family: var(--f-mono);
+    font-size: 12.5px;
+    color: var(--ink);
+  }
+
+  .gate {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s-2) var(--s-4);
+    padding: var(--s-3) var(--s-4);
+    margin: 0;
+    background: var(--amber-soft);
+    border-bottom: 1px solid var(--rule-soft);
+    border-left: 3px solid var(--amber-line);
+  }
+  .gate-label {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    font-weight: 600;
+  }
+  .gate-text { font-size: 13.5px; color: var(--ink); }
+  .gate.freeze { border-left-width: 6px; }
+  .gate.freeze .gate-text { font-weight: 600; }
+
+  .parallel {
+    border-left: 3px solid var(--blue);
+    padding-left: var(--s-4);
+    margin-left: 0;
+  }
+  .parallel-flag {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    padding: var(--s-3) 0 var(--s-1) var(--s-4);
+  }
+  .loopback {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    color: var(--ink-soft);
+    padding: var(--s-4) 0 0;
+  }
+  .loopback b { color: var(--ink); }
+
+  /* ---- agents ---- */
+  .agents { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: var(--s-5); }
+  @media (min-width: 640px) { .agents { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 980px) { .agents { grid-template-columns: repeat(3, 1fr); } }
+  .agent {
+    background: var(--surface);
+    padding: var(--s-4) var(--s-4) var(--s-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+  .agent-top { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-3); }
+  .agent h3 {
+    font-family: var(--f-mono);
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    color: var(--ink);
+  }
+  .model {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .agent p { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+  .agent-skills {
+    display: flex; flex-wrap: wrap; gap: var(--s-1) var(--s-2);
+    font-family: var(--f-mono); font-size: 11.5px; color: var(--ink-soft);
+    margin-top: auto; padding-top: var(--s-2);
+  }
+  .agent-skills span { border-bottom: 1px solid var(--rule); }
+
+  /* ---- table ---- */
+  .table-wrap { overflow-x: auto; margin-top: var(--s-5); border: 1px solid var(--rule); }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; background: var(--surface); }
+  thead th {
+    font-family: var(--f-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    text-align: left;
+    font-weight: 500;
+    padding: var(--s-3) var(--s-4);
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  tbody td { padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--rule-soft); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num { font-family: var(--f-mono); color: var(--ink-faint); font-variant-numeric: tabular-nums; }
+  td.sk { font-family: var(--f-mono); font-size: 12.5px; white-space: nowrap; }
+  td.ag { font-family: var(--f-mono); font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+  td.st { font-family: var(--f-mono); font-size: 12.5px; color: var(--blue); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.io { color: var(--ink-soft); min-width: 260px; }
+  td.io code { font-family: var(--f-mono); font-size: 12px; color: var(--ink); }
+  tbody tr.phase-a td.st { color: var(--ink-soft); }
+
+  /* ---- install ---- */
+  .install {
+    font-family: var(--f-mono);
+    font-size: 13px;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--blue);
+    padding: var(--s-4) var(--s-5);
+    overflow-x: auto;
+    margin-top: var(--s-5);
+    white-space: pre;
+    line-height: 1.9;
+  }
+  .install .c { color: var(--ink-faint); }
+
+  .cmds { margin-top: var(--s-5); display: grid; gap: var(--s-3); }
+  .cmd { display: flex; gap: var(--s-4); align-items: baseline; flex-wrap: wrap; }
+  .cmd code {
+    font-family: var(--f-mono); font-size: 13px; color: var(--ink);
+    background: var(--surface-2); padding: 2px 7px;
+  }
+  .cmd span { font-size: 13.5px; color: var(--ink-soft); }
+
+  footer {
+    margin-top: var(--s-8);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--rule);
+    font-family: var(--f-mono);
+    font-size: 11.5px;
+    color: var(--ink-faint);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--s-3);
+  }
+
+  a { color: var(--blue); }
+  a:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<div class="shell">
+  <aside class="rail">
+    <div class="rail-title">Contents</div>
+    <nav>
+      <a href="#rules">Three rules</a>
+      <a href="#spine">Document spine</a>
+      <a href="#flow">Flow</a>
+      <a href="#phase-a">Phase A</a>
+      <a href="#phase-b">Phase B</a>
+      <a href="#phase-c">Phase C</a>
+      <a href="#agents">Agents</a>
+      <a href="#skills">Skill index</a>
+      <a href="#tools">Tool stack</a>
+      <a href="#install">Install</a>
+    </nav>
+  </aside>
+
+  <main>
+    <header class="masthead">
+      <div class="eyebrow">Agency pipeline · marketing-fleet v0.1.0</div>
+      <h1>Marketing Fleet Pipeline</h1>
+      <p class="standfirst">
+        Ten role agents and twenty-seven skills carrying a client from the first call to launched,
+        measured campaigns. Campaigns ship one at a time, per client, and every campaign starts from
+        what the last one learned. Campaign 7 must sound and look like campaign 1 — and perform better.
+      </p>
+      <div class="meta">
+        <span><b>10</b> agents</span>
+        <span><b>27</b> skills</span>
+        <span><b>23</b> stages</span>
+        <span><b>9</b> human gates</span>
+        <span><b>4</b>-way parallel production</span>
+      </div>
+    </header>
+
+    <section id="rules">
+      <h2>The three rules <span class="h2-note">everything else is procedure</span></h2>
+      <p class="lede">
+        Agents have no memory between runs. An account lead carries the client's history in their
+        head; an agent starts blank every invocation. These three rules are what replace that.
+      </p>
+      <div class="rules">
+        <div class="rule-card">
+          <h3>C.0 preamble</h3>
+          <p>
+            Every agent reads <code>playbook.md</code> before doing anything. What worked is
+            reused; what failed is not repeated. Skipping it is how a campaign retests a hook that
+            already lost.
+          </p>
+        </div>
+        <div class="rule-card">
+          <h3>Tokens and voice are law</h3>
+          <p>
+            No hardcoded color, font, or spacing in creatives or video — only <code>tokens.json</code>.
+            No copy that contradicts <code>voice-guide.md</code> or the claims policy.
+          </p>
+        </div>
+        <div class="rule-card">
+          <h3>Humans hold the money and the publish button</h3>
+          <p>
+            Agents never launch ads, spend budget, post to social accounts, or send client email.
+            They prepare import-ready files and a checklist; a person ships.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="spine">
+      <h2>Document spine <span class="h2-note">one workspace, many clients</span></h2>
+      <div class="tree"><b>clients/&lt;client&gt;/</b>
+  <b>foundation/</b>
+    intake.md            <span class="c">goals, audience, budget, constraints, do-nots</span>
+    research.md          <span class="c">market, competitors, personas, keywords</span>
+    social-research.md   <span class="c">format mix, hooks, posting times, trends — dated</span>
+    research/raw/        <span class="c">raw scrape output, never scraped twice</span>
+    brand-strategy.md    <span class="c">positioning, pillars, claims policy</span>
+    voice-guide.md       <span class="c">tone, do/don't, example lines, banned words</span>
+    <b>brand-kit/</b>
+      <i>tokens.json</i>        <i>THE VISUAL SOURCE OF TRUTH — creatives and video</i>
+      brand-kit.md  logos/  fonts/
+    roadmap.md           <span class="c">ordered campaign queue (order: list)</span>
+  <i>playbook.md</i>            <i>THE LEARNING LEDGER — read at C.0, every campaign</i>
+  <b>studio/</b>
+    creatives/           <span class="c">React templates + render script</span>
+    video/               <span class="c">Remotion project</span>
+  <b>campaigns/NN-&lt;slug&gt;/</b>
+    brief.md  strategy.md  calendar.csv
+    creative-brief.md    <span class="c">FROZEN before production — every deliverable, by ID</span>
+    copy/                <span class="c">&lt;id&gt;.md, scripts/&lt;id&gt;.md</span>
+    design/              <span class="c">&lt;id&gt;/*.png, assets.md, contact-sheet.html</span>
+    video/               <span class="c">storyboard, footage log, edl.json, renders/; raw/ gitignored</span>
+    ads/                 <span class="c">plan, utm-sheet, import files, launch-checklist, results/</span>
+    review-log.md        <span class="c">open → fixed → verified / reopened</span>
+    tracking-check.md
+    approval/            <span class="c">client review page + sign-off, launch date</span>
+    report.md            <span class="c">results vs KPIs, after the flight</span>
+    summary.md           <span class="c">written at close, feeds the playbook</span></div>
+    </section>
+
+    <section id="flow">
+      <h2>Flow <span class="h2-note">gates in amber are hard stops</span></h2>
+      <div class="diagram">
+<pre class="mermaid">
+flowchart TD
+    Start([Client call]) --> F0
+
+    subgraph PA["PHASE A · ONBOARDING — once per client"]
+    direction TB
+        F0["F.0 client-intake<br/>account-manager"]
+        GA1{{"GATE · CLIENT<br/>open questions answered"}}
+        F1A["F.1a market-research<br/>market-researcher"]
+        F1B["F.1b social-research<br/>market-researcher"]
+        F2["F.2 brand-strategy + voice-guide<br/>brand-strategist"]
+        GA2{{"GATE · CLIENT<br/>positioning + voice"}}
+        F3A["F.3a brand-kit<br/>graphic-designer"]
+        F3B["F.3b design-templates<br/>graphic-designer"]
+        F3C["F.3c video-foundation<br/>video-producer"]
+        GA3{{"GATE · CLIENT<br/>brand kit + templates"}}
+        F4["F.4 campaign-roadmap<br/>account-manager + campaign-strategist"]
+        GA4{{"GATE · CLIENT<br/>campaign queue"}}
+
+        F0 --> GA1
+        GA1 --> F1A
+        GA1 --> F1B
+        F1A --> F2
+        F1B --> F2
+        F2 --> GA2 --> F3A
+        F3A --> F3B --> GA3
+        F3A --> F3C --> GA3
+        GA3 --> F4 --> GA4
+    end
+
+    GA4 --> C0
+
+    subgraph PB["PHASE B · CAMPAIGN LOOP — one campaign at a time"]
+    direction TB
+        C0["C.0 read playbook.md<br/>every agent"]
+        C1["C.1 campaign-brief<br/>account-manager"]
+        GB1{{"GATE · CLIENT<br/>brief approved"}}
+        C2["C.2 campaign-strategy + content-calendar<br/>campaign-strategist"]
+        GB2{{"GATE · YOU<br/>KPIs, mix, budget, calendar"}}
+        C3["C.3 creative-brief<br/>campaign-strategist"]
+        GB3{{"GATE · YOU<br/>CREATIVE BRIEF FROZEN"}}
+        C4A["C.4a write-script → write-copy<br/>copywriter"]
+        C4B["C.4b produce-creatives<br/>graphic-designer"]
+        C4C["C.4c produce-video / edit-footage<br/>video-producer"]
+        C4D["C.4d ads-plan<br/>performance-marketer"]
+        AM["amend-brief<br/>logged, owners notified"]
+        C5["C.5 ads-export<br/>performance-marketer"]
+        C6["C.6 brand-review<br/>brand-reviewer"]
+        FIX["fix-review<br/>owners · review-log → fixed"]
+        C7["C.7 tracking-check<br/>analytics-reporter"]
+        C8["C.8 approval-pack<br/>account-manager"]
+        GB4{{"GATE · CLIENT<br/>sign-off · HUMAN LAUNCHES"}}
+
+        C0 --> C1 --> GB1 --> C2 --> GB2 --> C3 --> GB3
+        GB3 --> C4A
+        GB3 --> C4B
+        GB3 --> C4C
+        GB3 --> C4D
+        C4A -.locked scripts.-> C4C
+        C4A -.blocked.-> AM
+        C4B -.blocked.-> AM
+        C4C -.blocked.-> AM
+        AM -.re-freeze.-> GB3
+        C4A --> C5
+        C4B --> C5
+        C4C --> C5
+        C4D --> C5
+        C5 --> C6
+        C6 -.fail · max 3 runs.-> FIX
+        FIX -.re-review.-> C6
+        C6 --> C7 --> C8 --> GB4
+    end
+
+    GB4 --> FLIGHT([Flight runs · exports to ads/results/])
+    FLIGHT --> C9
+
+    subgraph PC["PHASE C · REPORT AND CLOSE — after the flight"]
+    direction TB
+        C9["C.9 campaign-report<br/>analytics-reporter"]
+        GC1{{"GATE · YOU<br/>report reviewed"}}
+        C10["C.10 close-campaign<br/>analytics-reporter"]
+        C9 --> GC1 --> C10
+    end
+
+    C10 --> Q{More campaigns<br/>in roadmap?}
+    Q -->|yes · playbook feeds C.0| C0
+    Q -->|no| Done([Roadmap complete])
+</pre>
+      </div>
+    </section>
+
+    <section id="phase-a">
+      <h2>Phase A · Onboarding <span class="h2-note">once per client · /onboard</span></h2>
+      <p class="lede">
+        Everything a campaign will lean on is decided here, once: who the client is for, how they
+        sound, what they may claim, and what they look like — as tokens that both static creatives
+        and video import.
+      </p>
+
+      <div class="stages">
+        <div class="stage">
+          <div class="stage-code">F.0</div>
+          <div class="stage-agent">account-manager</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">client-intake</span></div>
+            <div class="stage-out">Client notes become <code>foundation/intake.md</code> — said vs inferred kept separate, open questions listed with options, explicit out of scope.</div>
+          </div>
+        </div>
+
+        <div class="gate">
+          <span class="gate-label">Gate · Client</span>
+          <span class="gate-text">Open questions answered before any research runs.</span>
+        </div>
+
+        <div class="parallel-flag">Parallel research</div>
+        <div class="parallel">
+          <div class="stage">
+            <div class="stage-code">F.1a</div>
+            <div class="stage-agent">market-researcher</div>
+            <div class="stage-body">
+              <div class="stage-skills"><span class="skill">market-research</span></div>
+              <div class="stage-out">Market, competitors, personas, keywords — every claim with a source and a date. Its competitor list unblocks F.1b.</div>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="stage-code">F.1b</div>
+            <div class="stage-agent">market-researcher</div>
+            <div class="stage-body">
+              <div class="stage-skills"><span class="skill">social-research</span></div>
+              <div class="stage-out">Instagram, Facebook, TikTok via Apify free credit (estimated and capped before every run), plus Meta Ad Library, TikTok Creative Center, and Google Trends via Playwright. Format mix, engagement by format, hooks, posting times, dated trends, gaps. Raw JSON saved first.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-code">F.2a</div>
+          <div class="stage-agent">brand-strategist</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">brand-strategy</span></div>
+            <div class="stage-out">Positioning against competitors, three to five messaging pillars, and the <b>claims policy</b>: can say, can say with proof, cannot say.</div>
+          </div>
+        </div>
+        <div class="stage">
+          <div class="stage-code">F.2b</div>
+          <div class="stage-agent">brand-strategist</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">voice-guide</span></div>
+            <div class="stage-out">Tone by example — this-not-that pairs, real lines, banned words, per-platform register.</div>
+          </div>
+        </div>
+
+        <div class="gate">
+          <span class="gate-label">Gate · Client</span>
+          <span class="gate-text">Positioning, pillars, claims policy, and voice approved.</span>
+        </div>
+
+        <div class="stage">
+          <div class="stage-code">F.3a</div>
+          <div class="stage-agent">graphic-designer</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">brand-kit</span></div>
+            <div class="stage-out"><code>tokens.json</code> — color, type, spacing, radius — plus logo, type, and imagery rules. The single visual source of truth.</div>
+          </div>
+        </div>
+
+        <div class="parallel-flag">Two studios, one set of tokens</div>
+        <div class="parallel">
+          <div class="stage">
+            <div class="stage-code">F.3b</div>
+            <div class="stage-agent">graphic-designer</div>
+            <div class="stage-body">
+              <div class="stage-skills"><span class="skill">design-templates</span></div>
+              <div class="stage-out">React templates for every placement in CONVENTIONS, props-driven, tokens only, rendered by Playwright at 2x/3x through a <code>/render</code> route.</div>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="stage-code">F.3c</div>
+            <div class="stage-agent">video-producer</div>
+            <div class="stage-body">
+              <div class="stage-skills"><span class="skill">video-foundation</span></div>
+              <div class="stage-out">Remotion project importing the same tokens: BrandIntro, BrandOutro, LowerThird, word-level Captions; whisper.cpp installed.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gate">
+          <span class="gate-label">Gate · Client</span>
+          <span class="gate-text">Brand kit, template previews, and brand intro/outro approved.</span>
+        </div>
+
+        <div class="stage">
+          <div class="stage-code">F.4</div>
+          <div class="stage-agent">account-manager + campaign-strategist</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">campaign-roadmap</span></div>
+            <div class="stage-out">Ordered campaign queue with one line of reasoning per position, and <code>playbook.md</code> seeded.</div>
+          </div>
+        </div>
+
+        <div class="gate freeze">
+          <span class="gate-label">Gate · Client</span>
+          <span class="gate-text">Campaign queue approved. Onboarding done.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="phase-b">
+      <h2>Phase B · Campaign loop <span class="h2-note">one campaign at a time · /campaign</span></h2>
+      <p class="lede">
+        Serial campaigns mean each one is measured before the next is planned, and the playbook
+        compounds. The cost is volume — which is why the brand-reviewer at C.6 matters more here
+        than anywhere else.
+      </p>
+
+      <div class="stages">
+        <div class="stage">
+          <div class="stage-code">C.0</div>
+          <div class="stage-agent">every agent</div>
+          <div class="stage-body">
+            <div class="stage-out">Read <code>playbook.md</code>, then CONVENTIONS and the foundation.</div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-code">C.1</div>
+          <div class="stage-agent">account-manager</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">campaign-brief</span></div>
+            <div class="stage-out">One roadmap entry becomes <code>brief.md</code>, with a measurable business outcome.</div>
+          </div>
+        </div>
+
+        <div class="gate">
+          <span class="gate-label">Gate · Client</span>
+          <span class="gate-text">Brief and its success measure approved.</span>
+        </div>
+
+        <div class="stage">
+          <div class="stage-code">C.2</div>
+          <div class="stage-agent">campaign-strategist</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">campaign-strategy</span><span class="skill">content-calendar</span></div>
+            <div class="stage-out">One goal, one primary KPI with a target that has a basis; channel, format, and budget mix from evidence. <code>calendar.csv</code> is the source of truth — no auto-posting.</div>
+          </div>
+        </div>
+
+        <div class="gate">
+          <span class="gate-label">Gate · You</span>
+          <span class="gate-text">KPIs, mix, budget split, and calendar approved.</span>
+        </div>
+
+        <div class="stage">
+          <div class="stage-code">C.3</div>
+          <div class="stage-agent">campaign-strategist</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">creative-brief</span></div>
+            <div class="stage-out">Every deliverable by ID: format, size, duration, message, pillar, CTA, owner, variants, due date.</div>
+          </div>
+        </div>
+
+        <div class="gate freeze">
+          <span class="gate-label">Gate · You</span>
+          <span class="gate-text">Creative brief frozen. This gate is what makes four-way parallel production safe.</span>
+        </div>
+
+        <div class="parallel-flag">Parallel production</div>
+        <div class="parallel">
+          <div class="stage">
+            <div class="stage-code">C.4a</div>
+            <div class="stage-agent">copywriter</div>
+            <div class="stage-body">
+              <div class="stage-skills"><span class="skill">write-script</span><span class="skill">write-copy</span></div>
+              <div class="stage-out">Scripts first and locked — video is blocked on them. Then copy, three to five variants per field, each testing one thing, validated by the limits checker.</div>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="stage-code">C.4b</div>
+            <div class="stage-agent">graphic-designer</div>
+            <div class="stage-body">
+              <div class="stage-skills"><span class="skill">produce-creatives</span></div>
+              <div class="stage-out">Templates + free stock photos with recorded licenses, rendered at 2x (3x for hero), plus a contact sheet.</div>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="stage-code">C.4c</div>
+            <div class="stage-agent">video-producer</div>
+            <div class="stage-body">
+              <div class="stage-skills"><span class="skill">produce-video</span><span class="skill">edit-footage</span></div>
+              <div class="stage-out">Motion: locked script → storyboard → ElevenLabs voiceover (Kokoro fallback) → captions → Remotion → every ratio. Footage: proxies → log → transcript paper edit → EDL → cleanup → subject-tracked reframe. Raw files read-only.</div>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="stage-code">C.4d</div>
+            <div class="stage-agent">performance-marketer</div>
+            <div class="stage-body">
+              <div class="stage-skills"><span class="skill">ads-plan</span></div>
+              <div class="stage-out">Structure follows the test plan; audiences from personas; UTMs for every deliverable and variant.</div>
+            </div>
+          </div>
+          <div class="stage">
+            <div class="stage-code">↺</div>
+            <div class="stage-agent">campaign-strategist</div>
+            <div class="stage-body">
+              <div class="stage-skills"><span class="skill">amend-brief</span></div>
+              <div class="stage-out">The only sanctioned change to a frozen brief — logged, owners notified, re-frozen.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-code">C.5</div>
+          <div class="stage-agent">performance-marketer</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">ads-export</span></div>
+            <div class="stage-out">Meta bulk-import and Google Ads Editor files built on headers exported from the client's own accounts — everything <b>paused</b> — plus a step-by-step launch checklist.</div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-code">C.6 ↺</div>
+          <div class="stage-agent">brand-reviewer ⇄ owners</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">brand-review</span><span class="skill">fix-review</span></div>
+            <div class="stage-out">Voice, claims, tokens, specs, copy limits, licenses, UTMs — every PNG opened, every video's frames extracted and seen. Findings <code>blocker</code> / <code>major</code> / <code>minor</code> filed in <code>review-log.md</code>; owners fix, reviewer verifies or reopens. Three runs at most, then escalate.</div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-code">C.7</div>
+          <div class="stage-agent">analytics-reporter</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">tracking-check</span></div>
+            <div class="stage-out">GA4 key events, UTM links landing and registering, pixels present. Verifies only; a human fixes configuration.</div>
+          </div>
+        </div>
+
+        <div class="stage">
+          <div class="stage-code">C.8</div>
+          <div class="stage-agent">account-manager</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">approval-pack</span></div>
+            <div class="stage-out">One self-contained review page with every deliverable, and <code>approval.md</code> for the sign-off and, later, the launch date.</div>
+          </div>
+        </div>
+
+        <div class="gate freeze">
+          <span class="gate-label">Gate · Client</span>
+          <span class="gate-text">Sign-off. A human imports the ad files and launches.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="phase-c">
+      <h2>Phase C · Report and close <span class="h2-note">after the flight · /report</span></h2>
+      <div class="stages">
+        <div class="stage">
+          <div class="stage-code">C.9</div>
+          <div class="stage-agent">analytics-reporter</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">campaign-report</span></div>
+            <div class="stage-out">GA4 plus the Ads Manager / Google Ads exports in <code>ads/results/</code>. KPIs vs targets; winners and losers by creative, audience, format, hook. Missing data listed, inconclusive tests called inconclusive.</div>
+          </div>
+        </div>
+
+        <div class="gate">
+          <span class="gate-label">Gate · You</span>
+          <span class="gate-text">Report reviewed before it reaches the client.</span>
+        </div>
+
+        <div class="stage">
+          <div class="stage-code">C.10</div>
+          <div class="stage-agent">analytics-reporter</div>
+          <div class="stage-body">
+            <div class="stage-skills"><span class="skill">close-campaign</span></div>
+            <div class="stage-out">Writes <code>summary.md</code> (detail) and folds it into <code>playbook.md</code> (index, one line per learning with its evidence).</div>
+          </div>
+        </div>
+
+        <div class="loopback">↺ &nbsp;The next campaign starts at <b>C.0</b> by reading the playbook just written. That read is the entire payoff of C.10.</div>
+      </div>
+    </section>
+
+    <section id="agents">
+      <h2>Agents <span class="h2-note">role = context boundary · skill = procedure</span></h2>
+      <div class="agents">
+        <div class="agent">
+          <div class="agent-top"><h3>account-manager</h3><span class="model">opus</span></div>
+          <p>Client truth: intake, briefs, approvals. Drafts client communication; never sends it.</p>
+          <div class="agent-skills"><span>client-intake</span><span>campaign-roadmap</span><span>campaign-brief</span><span>approval-pack</span></div>
+        </div>
+        <div class="agent">
+          <div class="agent-top"><h3>market-researcher</h3><span class="model">sonnet</span></div>
+          <p>Evidence with sources, dates, and sample sizes. Free tools first; credit budget enforced.</p>
+          <div class="agent-skills"><span>market-research</span><span>social-research</span></div>
+        </div>
+        <div class="agent">
+          <div class="agent-top"><h3>brand-strategist</h3><span class="model">opus</span></div>
+          <p>Positioning, pillars, voice, and the claims policy every later stage is checked against.</p>
+          <div class="agent-skills"><span>brand-strategy</span><span>voice-guide</span></div>
+        </div>
+        <div class="agent">
+          <div class="agent-top"><h3>campaign-strategist</h3><span class="model">opus</span></div>
+          <p>Roadmap, KPIs, mix, calendar, and the frozen creative brief that makes parallel production safe.</p>
+          <div class="agent-skills"><span>campaign-roadmap</span><span>campaign-strategy</span><span>content-calendar</span><span>creative-brief</span><span>amend-brief</span></div>
+        </div>
+        <div class="agent">
+          <div class="agent-top"><h3>copywriter</h3><span class="model">sonnet</span></div>
+          <p>Every word: scripts first, then copy variants within platform limits and the claims policy.</p>
+          <div class="agent-skills"><span>write-script</span><span>write-copy</span><span>fix-review</span></div>
+        </div>
+        <div class="agent">
+          <div class="agent-top"><h3>graphic-designer</h3><span class="model">sonnet</span></div>
+          <p>Brand kit, React templates, and high-res static creatives. Tokens only; no AI text or logos.</p>
+          <div class="agent-skills"><span>brand-kit</span><span>design-templates</span><span>produce-creatives</span><span>fix-review</span></div>
+        </div>
+        <div class="agent">
+          <div class="agent-top"><h3>video-producer</h3><span class="model">sonnet</span></div>
+          <p>Remotion studio, motion videos, and raw footage edits. Voiceover only on locked scripts.</p>
+          <div class="agent-skills"><span>video-foundation</span><span>produce-video</span><span>edit-footage</span><span>fix-review</span></div>
+        </div>
+        <div class="agent">
+          <div class="agent-top"><h3>performance-marketer</h3><span class="model">sonnet</span></div>
+          <p>Structure, audiences, tests, UTMs, and paused import files. Never launches or spends.</p>
+          <div class="agent-skills"><span>ads-plan</span><span>ads-export</span><span>fix-review</span></div>
+        </div>
+        <div class="agent">
+          <div class="agent-top"><h3>brand-reviewer</h3><span class="model">opus</span></div>
+          <p>Cross-campaign consistency and compliance. Files findings; never fixes them.</p>
+          <div class="agent-skills"><span>brand-review</span></div>
+        </div>
+        <div class="agent">
+          <div class="agent-top"><h3>analytics-reporter</h3><span class="model">sonnet</span></div>
+          <p>Tracking, honest reporting, and the playbook — its only writer.</p>
+          <div class="agent-skills"><span>tracking-check</span><span>campaign-report</span><span>close-campaign</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <h2>Skill index <span class="h2-note">27 skills · when each fires</span></h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>#</th><th>Skill</th><th>Agent</th><th>Stage</th><th>Reads → Writes</th></tr>
+          </thead>
+          <tbody>
+            <tr class="phase-a"><td class="num">01</td><td class="sk">client-intake</td><td class="ag">account-manager</td><td class="st">F.0</td><td class="io">client notes, transcripts → <code>foundation/intake.md</code></td></tr>
+            <tr class="phase-a"><td class="num">02</td><td class="sk">market-research</td><td class="ag">market-researcher</td><td class="st">F.1a</td><td class="io">intake → <code>foundation/research.md</code></td></tr>
+            <tr class="phase-a"><td class="num">03</td><td class="sk">social-research</td><td class="ag">market-researcher</td><td class="st">F.1b</td><td class="io">intake + competitor list → <code>social-research.md</code>, <code>research/raw/</code></td></tr>
+            <tr class="phase-a"><td class="num">04</td><td class="sk">brand-strategy</td><td class="ag">brand-strategist</td><td class="st">F.2a</td><td class="io">intake + research → <code>brand-strategy.md</code></td></tr>
+            <tr class="phase-a"><td class="num">05</td><td class="sk">voice-guide</td><td class="ag">brand-strategist</td><td class="st">F.2b</td><td class="io">brand strategy + social research → <code>voice-guide.md</code></td></tr>
+            <tr class="phase-a"><td class="num">06</td><td class="sk">brand-kit</td><td class="ag">graphic-designer</td><td class="st">F.3a</td><td class="io">brand strategy + client assets → <code>brand-kit/</code></td></tr>
+            <tr class="phase-a"><td class="num">07</td><td class="sk">design-templates</td><td class="ag">graphic-designer</td><td class="st">F.3b</td><td class="io">brand kit + format mix → <code>studio/creatives/</code></td></tr>
+            <tr class="phase-a"><td class="num">08</td><td class="sk">video-foundation</td><td class="ag">video-producer</td><td class="st">F.3c</td><td class="io">brand kit + voice → <code>studio/video/</code></td></tr>
+            <tr class="phase-a"><td class="num">09</td><td class="sk">campaign-roadmap</td><td class="ag">account-manager + campaign-strategist</td><td class="st">F.4</td><td class="io">all foundation → <code>roadmap.md</code>, <code>playbook.md</code></td></tr>
+            <tr><td class="num">10</td><td class="sk">campaign-brief</td><td class="ag">account-manager</td><td class="st">C.1</td><td class="io">roadmap + playbook + client input → <code>brief.md</code></td></tr>
+            <tr><td class="num">11</td><td class="sk">campaign-strategy</td><td class="ag">campaign-strategist</td><td class="st">C.2</td><td class="io">brief + foundation + playbook → <code>strategy.md</code></td></tr>
+            <tr><td class="num">12</td><td class="sk">content-calendar</td><td class="ag">campaign-strategist</td><td class="st">C.2</td><td class="io">strategy + social research → <code>calendar.csv</code></td></tr>
+            <tr><td class="num">13</td><td class="sk">creative-brief</td><td class="ag">campaign-strategist</td><td class="st">C.3</td><td class="io">strategy + calendar → <code>creative-brief.md</code> (frozen)</td></tr>
+            <tr><td class="num">14</td><td class="sk">amend-brief</td><td class="ag">campaign-strategist</td><td class="st">C.4 ↺</td><td class="io">blocker → amendment + changelog, re-freeze</td></tr>
+            <tr><td class="num">15</td><td class="sk">write-script</td><td class="ag">copywriter</td><td class="st">C.4a</td><td class="io">creative brief + voice → <code>copy/scripts/&lt;id&gt;.md</code></td></tr>
+            <tr><td class="num">16</td><td class="sk">write-copy</td><td class="ag">copywriter</td><td class="st">C.4a</td><td class="io">creative brief + voice + strategy → <code>copy/&lt;id&gt;.md</code></td></tr>
+            <tr><td class="num">17</td><td class="sk">produce-creatives</td><td class="ag">graphic-designer</td><td class="st">C.4b</td><td class="io">creative brief + copy + brand kit → <code>design/&lt;id&gt;/</code></td></tr>
+            <tr><td class="num">18</td><td class="sk">produce-video</td><td class="ag">video-producer</td><td class="st">C.4c</td><td class="io">creative brief + scripts + brand kit → <code>video/</code></td></tr>
+            <tr><td class="num">19</td><td class="sk">edit-footage</td><td class="ag">video-producer</td><td class="st">C.4c</td><td class="io">creative brief + <code>video/raw/</code> + scripts → <code>video/</code></td></tr>
+            <tr><td class="num">20</td><td class="sk">ads-plan</td><td class="ag">performance-marketer</td><td class="st">C.4d</td><td class="io">strategy + creative brief + personas → <code>ads/plan.md</code>, <code>utm-sheet.csv</code></td></tr>
+            <tr><td class="num">21</td><td class="sk">ads-export</td><td class="ag">performance-marketer</td><td class="st">C.5</td><td class="io">plan + copy + design + renders → import files, <code>launch-checklist.md</code></td></tr>
+            <tr><td class="num">22</td><td class="sk">brand-review</td><td class="ag">brand-reviewer</td><td class="st">C.6</td><td class="io">every deliverable + foundation + playbook → <code>review-log.md</code></td></tr>
+            <tr><td class="num">23</td><td class="sk">fix-review</td><td class="ag">copywriter, graphic-designer, video-producer, performance-marketer</td><td class="st">C.6 ↺</td><td class="io"><code>review-log.md</code> → fixed deliverables + fix notes</td></tr>
+            <tr><td class="num">24</td><td class="sk">tracking-check</td><td class="ag">analytics-reporter</td><td class="st">C.7</td><td class="io">KPIs + UTM sheet → <code>tracking-check.md</code></td></tr>
+            <tr><td class="num">25</td><td class="sk">approval-pack</td><td class="ag">account-manager</td><td class="st">C.8</td><td class="io">everything in the campaign → <code>approval/index.html</code>, <code>approval.md</code></td></tr>
+            <tr><td class="num">26</td><td class="sk">campaign-report</td><td class="ag">analytics-reporter</td><td class="st">C.9</td><td class="io">strategy + GA4 + ad exports → <code>report.md</code>, <code>report.html</code></td></tr>
+            <tr><td class="num">27</td><td class="sk">close-campaign</td><td class="ag">analytics-reporter</td><td class="st">C.10</td><td class="io">report + review log + deliverables → <code>summary.md</code>, <code>playbook.md</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tools">
+      <h2>Tool stack <span class="h2-note">free first · paid is bring-your-own-key</span></h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Need</th><th>Default (free)</th><th>Optional (your own account)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Web and competitor research</td><td class="io">WebSearch / WebFetch, Playwright MCP</td><td class="io">—</td></tr>
+            <tr><td>Social data</td><td class="io">Apify MCP — free monthly credit</td><td class="io">Paid Apify plan</td></tr>
+            <tr><td>Public ad research</td><td class="io">Meta Ad Library, TikTok Creative Center, Google Trends via Playwright</td><td class="io">—</td></tr>
+            <tr><td>Keywords</td><td class="io">Google Trends, autocomplete, competitor pages</td><td class="io">DataForSEO / Semrush / Ahrefs MCP</td></tr>
+            <tr><td>Static creatives</td><td class="io">React/HTML templates, Playwright at 2x/3x</td><td class="io">Figma MCP, Canva MCP</td></tr>
+            <tr><td>Stock imagery and footage</td><td class="io">Pexels / Pixabay / Unsplash APIs</td><td class="io">—</td></tr>
+            <tr><td>AI images / b-roll</td><td class="io">—</td><td class="io">fal.ai / Replicate (pay per use)</td></tr>
+            <tr><td>Video</td><td class="io">Remotion, ffmpeg, whisper.cpp, MediaPipe</td><td class="io">—</td></tr>
+            <tr><td>Voiceover</td><td class="io">ElevenLabs MCP free tier, Kokoro TTS fallback</td><td class="io">Paid ElevenLabs plan</td></tr>
+            <tr><td>Analytics</td><td class="io">Google Analytics MCP, Ads Manager CSV exports</td><td class="io">Ads platform MCPs</td></tr>
+            <tr><td>Content calendar</td><td class="io"><code>calendar.csv</code> in the spine</td><td class="io">Notion / Google Sheets sync</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="lede">
+        Remotion needs a company license for agencies over three people. ElevenLabs free-tier output
+        may not carry a commercial license — check the terms, or use Kokoro (Apache 2.0) for client work.
+      </p>
+    </section>
+
+    <section id="install">
+      <h2>Install <span class="h2-note">from GitHub</span></h2>
+      <div class="install">claude
+/plugin marketplace add ahsuniqbal/marketing-fleet
+/plugin install marketing-fleet@marketing-fleet</div>
+
+      <div class="cmds">
+        <div class="cmd"><code>/onboard &lt;client&gt;</code><span>Run Phase A, stopping at all four gates.</span></div>
+        <div class="cmd"><code>/campaign &lt;client&gt; [campaign]</code><span>Run Phase B for one campaign. Blank takes the next in the roadmap.</span></div>
+        <div class="cmd"><code>/report &lt;client&gt; [campaign]</code><span>Run Phase C after the flight. Never skip before the next campaign.</span></div>
+      </div>
+
+      <p class="lede" style="margin-top: var(--s-6)">
+        Before first use, fill in <code>CONVENTIONS.md</code>: agency, platforms in scope, sizes,
+        copy limits, render settings, credit budgets, naming, approval gates. Any field left as
+        <code>TBD</code> becomes a question agents must ask rather than a guess they will get wrong.
+      </p>
+    </section>
+
+    <footer>
+      <span>marketing-fleet v0.1.0 · 10 agents · 27 skills · 27 templates · 3 commands</span>
+      <span>github.com/ahsuniqbal/marketing-fleet</span>
+    </footer>
+  </main>
+</div>
+
+
+<script>
+  /* Renders the <pre class="mermaid"> block when this file is opened directly
+     in a browser. Hosts that render mermaid themselves (Artifacts, GitHub
+     preview) replace the <pre> with an <svg>, so we bail out in that case. */
+  (function () {
+    var CDN = "https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.15.0/mermaid.min.js";
+
+    function isDark() {
+      var t = document.documentElement.getAttribute("data-theme");
+      if (t) return t === "dark";
+      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+    }
+
+    var source = null;
+
+    function token(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    function render() {
+      var el = document.querySelector("pre.mermaid");
+      if (!el || el.querySelector("svg") || el.dataset.processed) return;
+      source = el.innerHTML;
+
+      var s = document.createElement("script");
+      s.src = CDN;
+      s.onload = function () {
+        /* Wait for the webfont — mermaid sizes each node from measured text,
+           and measuring against the fallback face clips the labels. */
+        var fonts = document.fonts ? document.fonts.ready : Promise.resolve();
+        fonts.then(function () { draw(el); });
+      };
+      document.head.appendChild(s);
+    }
+
+    function draw(el) {
+      /* mermaid auto-runs itself once it loads, with its default config, and
+         stamps the node as processed. Restore the source so our themed render
+         is the one that sticks. */
+      el.removeAttribute("data-processed");
+      el.innerHTML = source;
+
+      window.mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: "loose",
+        theme: "base",
+        flowchart: { htmlLabels: true, curve: "basis" },
+        themeVariables: {
+          fontFamily: token("--f-body") || "system-ui, sans-serif",
+          fontSize: "13px",
+          background: token("--surface"),
+          mainBkg: token("--surface-2"),
+          primaryColor: token("--surface-2"),
+          primaryTextColor: token("--ink"),
+          primaryBorderColor: token("--ink-faint"),
+          secondaryColor: token("--blue-soft"),
+          tertiaryColor: token("--surface"),
+          nodeBorder: token("--ink-faint"),
+          textColor: token("--ink"),
+          lineColor: token("--ink-soft"),
+          clusterBkg: isDark() ? token("--paper") : token("--surface"),
+          clusterBorder: token("--rule"),
+          titleColor: token("--ink-soft"),
+          edgeLabelBackground: token("--surface")
+        }
+      });
+      window.mermaid.run({ nodes: [el] });
+    }
+
+    function rerender() {
+      var el = document.querySelector("pre.mermaid");
+      if (!el || source === null || !window.mermaid) return;
+      draw(el);
+    }
+
+    /* Give a host renderer a tick to claim the block first. */
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", function () { setTimeout(render, 60); });
+    } else {
+      setTimeout(render, 60);
+    }
+
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", rerender);
+  })();
+</script>

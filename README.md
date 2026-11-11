@@ -7,6 +7,13 @@ Built around one constraint: **campaigns ship one at a time, per client, and eve
 starts from what the last one learned.** Volume is not the goal — consistency and compounding
 are. Campaign 7 must sound and look like campaign 1, and perform better.
 
+## Pipeline reference
+
+[pipeline.html](pipeline.html) is the whole pipeline on one page — flow diagram, all twenty-three
+stages, the nine human gates, the agent roster, the skill index, and the tool stack. Open it in a
+browser straight from the repo; it is a single self-contained file with no build step. It is a
+visual reference generated from this README — update both together.
+
 ## Install
 
 ```bash
@@ -63,8 +70,10 @@ launch checklist; a human imports, reviews, and publishes.
 
 ## Setup
 
-1. Fill in [CONVENTIONS.md](CONVENTIONS.md). Agents read it before producing anything; any field
-   left `TBD` becomes a question, not a guess.
+1. Copy [CONVENTIONS.md](CONVENTIONS.md) to the root of your agency workspace and fill it in
+   there — the installed plugin lives in Claude Code's cache and is overwritten on update. Agents
+   read the workspace copy before producing anything; any field left `TBD` becomes a question,
+   not a guess. `/onboard` copies it for you if it is missing.
 2. Export the keys you have (all optional; the stage that needs a missing one stops and asks):
 
    ```bash
@@ -186,6 +195,7 @@ Any deliverable change after C.3 goes through `amend-brief` (campaign-strategist
 | Stage | Agent | Skill | Output |
 |---|---|---|---|
 | C.9 | analytics-reporter | `campaign-report` | `report.md`, `report.html` |
+| 🚦 | | | User reviews the report before it reaches the client |
 | C.10 | analytics-reporter | `close-campaign` | `summary.md`, updated `playbook.md` |
 
 ## The three rules

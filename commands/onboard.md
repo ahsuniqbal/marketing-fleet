@@ -9,7 +9,8 @@ Once per client, before any campaign work.
 
 ## Before starting
 
-1. Read `CONVENTIONS.md`. If a field this phase depends on says `TBD` (agency languages,
+1. Read `CONVENTIONS.md` at the workspace root. If it does not exist, copy it from this plugin's
+   `CONVENTIONS.md` and tell the user to fill it in. If a field this phase depends on says `TBD` (agency languages,
    platforms in scope, approval gates), **ask the user** before F.0. Do not guess.
 2. Create `clients/<client>/foundation/`, `clients/<client>/campaigns/`, and
    `clients/<client>/studio/` if absent. Client folder names are kebab-case.
