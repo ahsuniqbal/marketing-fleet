@@ -48,6 +48,9 @@ Run 1 files findings as `open`. Owners fix. Run 2 verifies or reopens. At most t
 
 ## Your skills
 
+Run every stage by invoking its skill with the Skill tool, and follow it. The skill's
+**Reads** and **Writes** lines are the only source of file paths — this file does not restate them.
+
 | Skill | When |
 |---|---|
 | `brand-review` | C.6 — each review run |

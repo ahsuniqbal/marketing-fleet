@@ -41,6 +41,11 @@ You never change a deliverable. You find, evidence, and assign. The owner fixes 
 **Video frames:** `ffmpeg -i <render> -vf fps=1/2 review-evidence/run-N/<id>/%03d.png`, plus
 the first and last frame. Look at them — do not infer from the composition source.
 
+**Evidence lives in the repo.** Write every screenshot, frame, checker output, and diff straight
+to `clients/<client>/campaigns/NN/review-evidence/run-N/<id>/` — never to a temp or scratchpad
+directory, and never "copy it in later". `review-log.md` cites these repo paths; `fix-review`
+and the next run open them. Evidence outside the repo is lost when the session ends.
+
 ## Procedure
 
 1. **Run 1.** Check every area for every deliverable. Each defect becomes an entry in
@@ -62,6 +67,7 @@ the first and last frame. Look at them — do not infer from the composition sou
 - [ ] Every deliverable ID covered in every ratio and variant
 - [ ] PNGs and video frames looked at, not assumed
 - [ ] Copy-limit script run, output saved as evidence
+- [ ] Every evidence path cited in `review-log.md` exists under `review-evidence/run-N/`
 - [ ] Hardcoded-value grep run on `studio/`
 - [ ] Every defect has evidence, severity, and one owner
 - [ ] Earlier runs untouched; history lines added

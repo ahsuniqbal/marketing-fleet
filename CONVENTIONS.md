@@ -101,7 +101,9 @@ Optional tools enabled in this workspace (agents use none of these unless listed
 - Clients: `clients/<kebab-case>/`
 - Campaigns: `campaigns/NN-<kebab-slug>/`, `NN` zero-padded in roadmap order
 - Deliverable IDs: `<campaign NN>-<format>-<seq>`, e.g. `03-reel-01`, `03-static-04`, `03-search-01`
-- Render files: `<deliverable-id>-<WxH or ratio>[-v<variant>].<ext>`, e.g. `03-reel-01-9x16.mp4`
+- Render files: `<deliverable-id>-<WxH>[-v<variant>].<ext>` — pixel size, never a ratio, e.g.
+  `03-reel-01-1080x1920.mp4`, `03-static-04-1080x1350-v2.png`. One name per file; never render the
+  same size under two names
 - UTM: `utm_source=<platform>`, `utm_medium=<paid_social|cpc|organic_social|email>`,
   `utm_campaign=<client>-<NN>-<slug>`, `utm_content=<deliverable-id>[-v<variant>]`
 

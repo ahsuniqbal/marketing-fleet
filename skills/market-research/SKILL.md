@@ -7,7 +7,9 @@ description: Research a client's market, competitors, audience, and search deman
 
 **Stage:** F.1a · **Agent:** market-researcher
 **Reads:** `foundation/intake.md`, `CONVENTIONS.md`
-**Writes:** `clients/<client>/foundation/research.md` (template: `templates/client-research.md`)
+**Writes:** `clients/<client>/foundation/research.md` (template: `templates/client-research.md`),
+`clients/<client>/foundation/research/raw/` (saved page extracts, Trends and ad-library pulls,
+named `<source>-<subject>-<YYYY-MM-DD>.<ext>`)
 
 Positioning, voice, and every campaign target are built on this document. Research that repeats
 the client's beliefs back to them adds nothing; research that tests them is the job.
@@ -38,6 +40,8 @@ the client's beliefs back to them adds nothing; research that tests them is the 
    paid tool, record relative interest, not invented volumes.
 6. **Gaps and opportunities.** What no competitor says, owns, or serves well.
 7. **Source every claim.** URL and access date. An unsourced number is deleted.
+8. **Save raw evidence** to `foundation/research/raw/` before analysing it — the same folder
+   `social-research` uses. Check it first; never fetch the same source twice in a month.
 
 ## Checklist
 

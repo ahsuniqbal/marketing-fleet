@@ -40,6 +40,9 @@ failed angles), `foundation/voice-guide.md`, `foundation/brand-strategy.md` (pil
 
 ## Your skills
 
+Run every stage by invoking its skill with the Skill tool, and follow it. The skill's
+**Reads** and **Writes** lines are the only source of file paths — this file does not restate them.
+
 | Skill | When |
 |---|---|
 | `write-script` | C.4a — first; scripts locked for video |

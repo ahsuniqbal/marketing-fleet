@@ -42,6 +42,9 @@ a mistake. Then read the foundation and the campaign's `brief.md`.
 
 ## Your skills
 
+Run every stage by invoking its skill with the Skill tool, and follow it. The skill's
+**Reads** and **Writes** lines are the only source of file paths — this file does not restate them.
+
 | Skill | When |
 |---|---|
 | `campaign-roadmap` | F.4 — with account-manager |

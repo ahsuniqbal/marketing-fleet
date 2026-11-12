@@ -41,6 +41,9 @@ Read `CONVENTIONS.md`, `clients/<client>/playbook.md` if it exists, then `founda
 
 ## Your skills
 
+Run every stage by invoking its skill with the Skill tool, and follow it. The skill's
+**Reads** and **Writes** lines are the only source of file paths — this file does not restate them.
+
 | Skill | When |
 |---|---|
 | `brand-strategy` | F.2a — positioning, pillars, claims policy |

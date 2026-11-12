@@ -11,7 +11,7 @@ description: Edit client-shot raw footage into campaign videos — proxies, tran
 `playbook.md`, `CONVENTIONS.md`
 **Writes:** `campaigns/NN/video/footage-log.md` (template: `templates/campaign-footage-log.md`),
 `campaigns/NN/video/edl.json` (template: `templates/campaign-edl.json`),
-`studio/video/src/campaigns/NN/<id>.tsx`, `campaigns/NN/video/renders/<id>-<ratio>.mp4` + `.srt`
+`studio/video/src/campaigns/NN/<id>.tsx`, `campaigns/NN/video/renders/<id>-<WxH>[-v<variant>].mp4` + `.srt`
 
 ## Text-based editing
 
@@ -27,6 +27,13 @@ of it without redoing the rest.
    goes to `video/transcripts/` and `video/reframe/` and is committed.
 2. **Every cut traces to the log.** An EDL entry names a clip and timestamps that exist in
    `footage-log.md`.
+
+## Where tooling runs
+
+Run every `npm`, `npx`, `remotion`, and `playwright` command from inside `studio/video/`
+(`cd clients/<client>/studio/video` first, or `npm --prefix`). Never at the client root or the
+workspace root: that leaves a stray `package-lock.json`, `node_modules/`, `.cache/`, and
+`.remotion/` in `clients/<client>/`. All dependencies live in `studio/video/package.json`.
 
 ## Procedure
 
@@ -54,7 +61,7 @@ of it without redoing the rest.
    write per-frame crop offsets to `video/reframe/<clip>.json`. The composition reads it. Never a
    blind centre crop.
 10. **Captions and render.** Captions from the edited transcript; `npx remotion render` each
-    ratio; export `.srt`.
+    ratio from `studio/video/`, named `<id>-<WxH>[-v<variant>].mp4`; export `.srt`.
 11. **Self-check.** Extract frames every 2 seconds and look: subject in frame after reframe, no
     jump cuts mid-word, captions inside safe zones, brand elements correct.
 

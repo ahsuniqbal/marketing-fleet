@@ -20,7 +20,7 @@ sizes a render instead of forty designs.
 studio/creatives/
   package.json          react, react-dom, vite; playwright as a dev dependency
   src/
-    tokens.ts           imports ../../foundation/brand-kit/tokens.json — the only style source
+    tokens.ts           imports ../../../foundation/brand-kit/tokens.json — the only style source
     templates/          one component per template
     preview.tsx         renders every template, every size, with sample props
     render.tsx          route /render?template=&size=&props=<json> — one creative, no chrome
@@ -31,6 +31,13 @@ Static PNGs are produced by `skills/produce-creatives/scripts/render-stills.mjs`
 `CONVENTIONS.md` (2x default, 3x for hero/print). The render route must therefore show exactly
 one creative at the exact pixel size, on a transparent-free background, with fonts loaded before
 the page signals ready (`document.fonts.ready`).
+
+## Where tooling runs
+
+Run every `npm`, `npx`, `remotion`, and `playwright` command from inside `studio/creatives/`
+(`cd clients/<client>/studio/creatives` first, or `npm --prefix`). Never at the client root or the
+workspace root: that leaves a stray `package-lock.json`, `node_modules/`, `.cache/`, and
+`.remotion/` in `clients/<client>/`. All dependencies live in `studio/creatives/package.json`.
 
 ## Procedure
 
@@ -57,6 +64,7 @@ the page signals ready (`document.fonts.ready`).
 ## Checklist
 
 - [ ] No style literal outside `tokens.ts`
+- [ ] Every install and cache is inside `studio/creatives/`; nothing at the client root
 - [ ] A template for every format in the recommended mix
 - [ ] Every size in `CONVENTIONS.md` that is in scope
 - [ ] Story safe zones enforced

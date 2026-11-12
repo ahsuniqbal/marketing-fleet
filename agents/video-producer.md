@@ -41,6 +41,9 @@ Read `CONVENTIONS.md` (sizes, fps, codec, loudness, credit budgets),
 
 ## Your skills
 
+Run every stage by invoking its skill with the Skill tool, and follow it. The skill's
+**Reads** and **Writes** lines are the only source of file paths — this file does not restate them.
+
 | Skill | When |
 |---|---|
 | `video-foundation` | F.3c — Remotion studio with brand compositions |

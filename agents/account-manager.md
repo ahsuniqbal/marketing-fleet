@@ -46,6 +46,9 @@ If a client request seems to force a creative or media choice, write down the *c
 
 ## Your skills
 
+Run every stage by invoking its skill with the Skill tool, and follow it. The skill's
+**Reads** and **Writes** lines are the only source of file paths — this file does not restate them.
+
 | Skill | When |
 |---|---|
 | `client-intake` | F.0 — client input becomes `intake.md` |

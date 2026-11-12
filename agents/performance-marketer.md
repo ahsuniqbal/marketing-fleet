@@ -42,6 +42,9 @@ and frozen `creative-brief.md`.
 
 ## Your skills
 
+Run every stage by invoking its skill with the Skill tool, and follow it. The skill's
+**Reads** and **Writes** lines are the only source of file paths — this file does not restate them.
+
 | Skill | When |
 |---|---|
 | `ads-plan` | C.4d — structure, audiences, budget, tests, UTMs |

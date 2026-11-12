@@ -10,7 +10,7 @@ description: Produce a campaign's motion videos from locked scripts — storyboa
 `foundation/brand-kit/tokens.json`, `foundation/brand-kit/brand-kit.md`,
 `foundation/voice-guide.md`, `playbook.md`, `CONVENTIONS.md` (render settings, sizes, budgets)
 **Writes:** `campaigns/NN/video/storyboard.md` (template: `templates/campaign-storyboard.md`),
-`studio/video/src/campaigns/NN/<id>.tsx`, `campaigns/NN/video/renders/<id>-<ratio>.mp4` + `.srt`,
+`studio/video/src/campaigns/NN/<id>.tsx`, `campaigns/NN/video/renders/<id>-<WxH>[-v<variant>].mp4` + `.srt`,
 `campaigns/NN/video/assets.md` (every stock asset, its source URL, and its license)
 
 ## Why this is built in code
@@ -27,6 +27,13 @@ not a style choice.
 - The script must be **locked** — its header says `Status: locked`. Until then, storyboard and
   gather assets only. Never record final voiceover against an unlocked script.
 - Read `playbook.md` for hook lengths, pacing, and caption styles that have already won or lost.
+
+## Where tooling runs
+
+Run every `npm`, `npx`, `remotion`, and `playwright` command from inside `studio/video/`
+(`cd clients/<client>/studio/video` first, or `npm --prefix`). Never at the client root or the
+workspace root: that leaves a stray `package-lock.json`, `node_modules/`, `.cache/`, and
+`.remotion/` in `clients/<client>/`. All dependencies live in `studio/video/package.json`.
 
 ## Procedure
 
@@ -51,7 +58,8 @@ not a style choice.
    created — `BrandIntro`, `BrandOutro`, `LowerThird`, `Captions` — and values from `tokens.json`
    only. Register one composition per ratio (9:16, 1:1 or 4:5, 16:9 as the brief requires). Keep
    text inside the safe zones in `CONVENTIONS.md`.
-7. **Render.** `npx remotion render <CompositionId> ../../campaigns/NN/video/renders/<id>-<ratio>.mp4`
+7. **Render.** From `studio/video/`:
+   `npx remotion render <CompositionId> ../../campaigns/NN/video/renders/<id>-<WxH>[-v<variant>].mp4`
    at the fps and codec in `CONVENTIONS.md`.
 8. **Normalise loudness.** `ffmpeg -i in.mp4 -af loudnorm=I=-14:TP=-1.5:LRA=11 -c:v copy out.mp4`
    (target per `CONVENTIONS.md`). Replace the render with the normalised file.
@@ -68,7 +76,7 @@ not a style choice.
 - [ ] ElevenLabs characters logged; fallback recorded if used
 - [ ] Captions word-timed, brand names spelled right, `.srt` delivered
 - [ ] Only tokens — no hardcoded colour, font, or spacing
-- [ ] Every ratio in the brief rendered, named `<id>-<ratio>.mp4`
+- [ ] Every ratio in the brief rendered, named `<id>-<WxH>[-v<variant>].mp4`
 - [ ] Loudness normalised
 - [ ] Frames reviewed by eye
 

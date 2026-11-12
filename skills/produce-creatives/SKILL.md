@@ -24,6 +24,13 @@ description: Produce every static deliverable in the frozen creative brief — f
 - **Free stock first.** Pexels, Unsplash, or Pixabay APIs. Optional tools — Figma, Canva, AI
   images — only if CONVENTIONS lists them as enabled. AI never generates text or logos.
 
+## Where tooling runs
+
+Run every `npm`, `npx`, `remotion`, and `playwright` command from inside `studio/creatives/`
+(`cd clients/<client>/studio/creatives` first, or `npm --prefix`). Never at the client root or the
+workspace root: that leaves a stray `package-lock.json`, `node_modules/`, `.cache/`, and
+`.remotion/` in `clients/<client>/`. All dependencies live in `studio/creatives/package.json`.
+
 ## Procedure
 
 1. **List the work.** Every static ID in the creative brief owned by graphic-designer, with all

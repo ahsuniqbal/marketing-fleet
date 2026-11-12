@@ -22,13 +22,15 @@ to the workspace owner; note in the document that the analysis is of public data
 
 ## Credit guards — Apify free tier
 
-1. **Check `research/raw/` first.** If a profile was scraped within the last 30 days, reuse it.
+1. **Check `clients/<client>/foundation/research/raw/` first.** If a profile was scraped within the last 30 days, reuse it.
    Never scrape the same thing twice.
 2. **Estimate before every run.** Actor, profiles, results per profile, and expected cost
    against the remaining monthly credit. State it before running.
 3. **Cap results** to the `CONVENTIONS.md` budget (default: 50 posts per profile, 10 profiles).
    Last 90 days only.
-4. **Save raw output** as `research/raw/<platform>-<handle>-<YYYY-MM-DD>.json` before analysing.
+4. **Save raw output** as
+   `clients/<client>/foundation/research/raw/<platform>-<handle>-<YYYY-MM-DD>.json` before
+   analysing. This is the only raw folder — never create `clients/<client>/research/`.
 5. If `APIFY_TOKEN` is missing or the credit is spent, stop and tell the user. Do not switch to
    a paid tool on your own.
 
@@ -55,7 +57,7 @@ to the workspace owner; note in the document that the analysis is of public data
 
 ## Checklist
 
-- [ ] `research/raw/` checked before any scrape
+- [ ] `foundation/research/raw/` checked before any scrape
 - [ ] Cost estimated and stated before each Apify run
 - [ ] Result caps respected
 - [ ] Raw JSON saved, dated

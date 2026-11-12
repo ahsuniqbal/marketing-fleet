@@ -17,7 +17,9 @@ Once per client, before any campaign work.
 3. If the workspace `.gitignore` lacks the rules in `templates/workspace.gitignore`, append them.
    Raw footage must never be committed.
 4. Copy the relevant file from `templates/` as each stage starts.
-5. Check which keys are exported (`APIFY_TOKEN`, `PEXELS_API_KEY`, …). Report missing ones now,
+5. If the workspace has no `.env`, copy this plugin's `.env.example` there as `.env` and tell the
+   user to fill it and reload it (`set -a; source .env; set +a`) before restarting Claude.
+   Check which keys are exported (`APIFY_TOKEN`, `PEXELS_API_KEY`, …). Report missing ones now,
    not when the stage that needs them fails.
 
 ## Stages — stop at every gate
@@ -27,7 +29,7 @@ Once per client, before any campaign work.
 | F.0 | `account-manager` | `client-intake` | `foundation/intake.md` |
 | 🚦 | — | — | **STOP.** Present open questions. Wait for client answers. |
 | F.1a ⟂ | `market-researcher` | `market-research` | `foundation/research.md` |
-| F.1b ⟂ | `market-researcher` | `social-research` | `foundation/social-research.md`, `research/raw/` |
+| F.1b ⟂ | `market-researcher` | `social-research` | `foundation/social-research.md`, `foundation/research/raw/` |
 | F.2a | `brand-strategist` | `brand-strategy` | `foundation/brand-strategy.md` |
 | F.2b | `brand-strategist` | `voice-guide` | `foundation/voice-guide.md` |
 | 🚦 | — | — | **STOP.** Client approves positioning, pillars, claims policy, and voice. |

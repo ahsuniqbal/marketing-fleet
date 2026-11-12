@@ -1,7 +1,7 @@
 {
   "name": "marketing-fleet",
   "description": "Client-by-client, campaign-by-campaign marketing agency pipeline: 10 role agents and 27 skills that carry a client from onboarding to launched, measured campaigns through a versioned document spine. Free-first tool stack.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Ahsun Iqbal"
   }

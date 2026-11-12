@@ -21,13 +21,25 @@ Remotion is free for individuals and companies of up to three people; larger com
 company license (remotion.dev/license). Record in `studio/video/README.md` which applies to this
 workspace. If unknown, ask before scaffolding.
 
+## Where tooling runs
+
+Run every `npm`, `npx`, `remotion`, and `playwright` command from inside `studio/video/`
+(`cd clients/<client>/studio/video` first, or `npm --prefix`). Never at the client root or the
+workspace root: that leaves a stray `package-lock.json`, `node_modules/`, `.cache/`, and
+`.remotion/` in `clients/<client>/`. All dependencies live in `studio/video/package.json`.
+
 ## Procedure
 
 1. **Scaffold.** In `studio/video/`: `npx create-video@latest` with the blank TypeScript
    template. Pin the Remotion version; all `remotion` and `@remotion/*` packages must share it.
-2. **Tokens.** `src/tokens.ts` imports `../../foundation/brand-kit/tokens.json`. Load brand
-   fonts with `@remotion/google-fonts` or `@remotion/fonts` from `brand-kit/fonts/`. No color,
-   font, or timing literal elsewhere — durations come from `motion.*` tokens converted to frames.
+2. **Tokens.** `studio/video/src/tokens.ts` imports `../../../foundation/brand-kit/tokens.json`
+   (three levels up: `src/` → `video/` → `studio/` → client). Load brand fonts with
+   `@remotion/google-fonts` or `@remotion/fonts` from `brand-kit/fonts/`. No color, font, or
+   timing literal elsewhere. Read tokens by their exact paths in `tokens.json` — durations are
+   `motion.duration.fast`, `motion.duration.base`, `motion.duration.slow` (ms), easings are
+   `motion.easing.standard|enter|exit`, logo reveal is `motion.logoReveal` — converted to frames
+   with one helper (`msToFrames(ms, fps)`). There is no `motion.base`; type `tokens.ts` from the
+   JSON so a wrong path fails the type check.
 3. **Compositions**, each with typed props and registered in `Root.tsx` at 1080×1920, 1080×1080,
    and 1920×1080 (layout adapts per ratio):
    - `BrandIntro` — logo reveal, 1–2 s
@@ -52,7 +64,8 @@ workspace. If unknown, ask before scaffolding.
 
 - [ ] License situation recorded
 - [ ] All Remotion packages on one pinned version
-- [ ] No style or timing literal outside `tokens.ts`
+- [ ] No style or timing literal outside `tokens.ts`; `tsc --noEmit` passes
+- [ ] Every install and cache is inside `studio/video/`; nothing at the client root
 - [ ] Brand fonts load in render, not just in preview
 - [ ] Intro, outro, lower-third, captions, template — in all three ratios
 - [ ] Captions respect safe zones

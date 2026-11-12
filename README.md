@@ -74,22 +74,50 @@ launch checklist; a human imports, reviews, and publishes.
    there — the installed plugin lives in Claude Code's cache and is overwritten on update. Agents
    read the workspace copy before producing anything; any field left `TBD` becomes a question,
    not a guess. `/onboard` copies it for you if it is missing.
-2. Export the keys you have (all optional; the stage that needs a missing one stops and asks):
+2. **API keys.** Copy [.env.example](.env.example) from this repo to the root of your own
+   agency workspace as `.env`, and fill in the keys you have. Keys go in the workspace, never
+   in the plugin. `templates/workspace.gitignore` already ignores `.env`, so keys are never
+   committed. All keys are optional; a stage that needs a missing key stops and asks.
 
    ```bash
-   export APIFY_TOKEN=...            # apify.com, free account
-   export ELEVENLABS_API_KEY=...     # elevenlabs.io, free tier
-   export PEXELS_API_KEY=...         # pexels.com/api
-   export PIXABAY_API_KEY=...        # pixabay.com/api/docs
-   export UNSPLASH_ACCESS_KEY=...    # unsplash.com/developers
-   export GOOGLE_APPLICATION_CREDENTIALS=...  # GA4 read access
-   export GOOGLE_PROJECT_ID=...
+   cp /path/to/marketing-fleet/.env.example /path/to/your-workspace/.env
    ```
 
-3. Local tools: Node.js 20+, `ffmpeg`, `uv` (for `uvx`), `pipx`. `video-producer` installs
-   Remotion and whisper.cpp into the client's studio on first use.
+   | Key | Get it at | Used by |
+   |---|---|---|
+   | `APIFY_TOKEN` | apify.com (free account, monthly credit) | `social-research` — public Instagram, Facebook, TikTok posts |
+   | `ELEVENLABS_API_KEY` | elevenlabs.io (free tier, ~10k chars/month) | `produce-video` — final voiceover on locked scripts |
+   | `PEXELS_API_KEY` | pexels.com/api | `produce-creatives`, `produce-video` — stock images and footage |
+   | `PIXABAY_API_KEY` | pixabay.com/api/docs | `produce-creatives`, `produce-video` — stock images, footage, music |
+   | `UNSPLASH_ACCESS_KEY` | unsplash.com/developers | `produce-creatives` — stock images |
+   | `GOOGLE_APPLICATION_CREDENTIALS` | Google Cloud service-account JSON with Viewer on the GA4 property | `tracking-check`, `campaign-report` — GA4 read |
+   | `GOOGLE_PROJECT_ID` | the same Google Cloud project | as above |
 
-The MCP servers are declared in [.mcp.json](.mcp.json). A server without its key fails to start;
+   Claude Code does not read `.env` on its own, and the MCP servers take their keys from the
+   shell environment. Load it before starting Claude, from the workspace root:
+
+   ```bash
+   set -a; source .env; set +a; claude
+   ```
+
+   Or use direnv with `dotenv` in an `.envrc`.
+
+3. **Local tools.**
+
+   | Tool | Needed for | Install (macOS) |
+   |---|---|---|
+   | Node.js 20+ and `npx` | studios, Playwright and Apify MCP, render scripts | nodejs.org or `brew install node` |
+   | `ffmpeg` / `ffprobe` | video renders, loudness, frame extraction | `brew install ffmpeg` |
+   | `uv` (provides `uvx`) | ElevenLabs MCP | `brew install uv` |
+   | `pipx` | Google Analytics MCP | `brew install pipx && pipx ensurepath` |
+   | whisper.cpp | word-level captions from voiceover | installed into `studio/video/` by `video-foundation` on first use |
+   | Remotion | motion video | installed into `studio/video/` by `video-foundation` on first use |
+   | Kokoro TTS (optional) | draft and fallback voiceover without ElevenLabs | `pip install kokoro soundfile` (macOS `say` also works for drafts) |
+   | MediaPipe (optional) | subject-tracked vertical reframes of client footage | `pip install mediapipe` |
+
+The MCP servers are declared in [.mcp.json](.mcp.json). The browser server is named
+`marketing-playwright` so it does not collide with another plugin's `playwright` server; its tools
+appear as `mcp__plugin_marketing-fleet_marketing-playwright__*`. A server without its key fails to start;
 that only matters for the stage that uses it.
 
 ## The document spine
@@ -147,7 +175,7 @@ Templates for all documents are in [templates/](templates/).
 | F.0 | account-manager | `client-intake` | `foundation/intake.md` |
 | 🚦 | | | Client answers open questions |
 | F.1a ⟂ | market-researcher | `market-research` | `foundation/research.md` |
-| F.1b ⟂ | market-researcher | `social-research` | `foundation/social-research.md`, `research/raw/` |
+| F.1b ⟂ | market-researcher | `social-research` | `foundation/social-research.md`, `foundation/research/raw/` |
 | F.2a | brand-strategist | `brand-strategy` | `foundation/brand-strategy.md` |
 | F.2b | brand-strategist | `voice-guide` | `foundation/voice-guide.md` |
 | 🚦 | | | Client approves positioning and voice |
@@ -228,7 +256,7 @@ Any deliverable change after C.3 goes through `amend-brief` (campaign-strategist
 |---|---|---|---|---|
 | `client-intake` | F.0 | account-manager | client notes, call transcripts | `foundation/intake.md` |
 | `market-research` | F.1a | market-researcher | `intake.md` | `foundation/research.md` |
-| `social-research` | F.1b | market-researcher | `intake.md`, `research.md` competitor list | `foundation/social-research.md`, `research/raw/` |
+| `social-research` | F.1b | market-researcher | `intake.md`, `research.md` competitor list | `foundation/social-research.md`, `foundation/research/raw/` |
 | `brand-strategy` | F.2a | brand-strategist | `intake.md`, `research.md`, `social-research.md` | `foundation/brand-strategy.md` |
 | `voice-guide` | F.2b | brand-strategist | `brand-strategy.md`, `social-research.md` | `foundation/voice-guide.md` |
 | `brand-kit` | F.3a | graphic-designer | `brand-strategy.md`, client assets | `foundation/brand-kit/` |

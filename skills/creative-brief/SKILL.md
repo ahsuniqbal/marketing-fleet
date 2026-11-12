@@ -41,7 +41,11 @@ change goes through `amend-brief`. No exceptions, no "small tweaks" in chat.
    voiceover yes/no. Footage that has not arrived blocks that ID — say so.
 6. **Visual direction.** Name the existing templates to use. A new template is allowed only with a
    reason; it is built inside `produce-creatives` and goes in the playbook at close.
-7. **Freeze.** Set `Frozen: <date>`, add an empty Changelog, get approval, and tell all four C.4
+7. **Ad-account export templates.** If the ads plan has paid placements, check for
+   `ads/templates/meta-export.csv` and `ads/templates/google-editor-export.csv` (`ads-export`
+   cannot build import files without them). If absent, add a client/user ask to the brief's open
+   items with a due date before C.5, so it is not discovered at the approval pack.
+8. **Freeze.** Set `Frozen: <date>`, add an empty Changelog, get approval, and tell all four C.4
    agents the brief is frozen.
 
 ## Checklist
@@ -54,6 +58,7 @@ change goes through `amend-brief`. No exceptions, no "small tweaks" in chat.
 - [ ] Copy field keys listed per deliverable
 - [ ] Video mode and footage status listed per video deliverable
 - [ ] Templates named; any new template justified
+- [ ] Ad-account export templates present, or requested with a due date before C.5
 - [ ] `Frozen:` date set and Changelog section present
 - [ ] All four C.4 agents notified
 
