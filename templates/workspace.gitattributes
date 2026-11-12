@@ -1,0 +1,10 @@
+# marketing-fleet workspace — copy to the agency workspace as .gitattributes
+# Rendered media is re-rendered on every review run; store it in Git LFS so the
+# repository does not grow by every version. Needs: brew install git-lfs && git lfs install
+*.png  filter=lfs diff=lfs merge=lfs -text
+*.jpg  filter=lfs diff=lfs merge=lfs -text
+*.mp4  filter=lfs diff=lfs merge=lfs -text
+*.mov  filter=lfs diff=lfs merge=lfs -text
+*.mp3  filter=lfs diff=lfs merge=lfs -text
+*.wav  filter=lfs diff=lfs merge=lfs -text
+*.aiff filter=lfs diff=lfs merge=lfs -text

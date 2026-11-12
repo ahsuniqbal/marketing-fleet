@@ -114,6 +114,14 @@ launch checklist; a human imports, reviews, and publishes.
    | Remotion | motion video | installed into `studio/video/` by `video-foundation` on first use |
    | Kokoro TTS (optional) | draft and fallback voiceover without ElevenLabs | `pip install kokoro soundfile` (macOS `say` also works for drafts) |
    | MediaPipe (optional) | subject-tracked vertical reframes of client footage | `pip install mediapipe` |
+   | Git LFS | keeps re-rendered images, video, and audio out of git history | `brew install git-lfs && git lfs install` |
+
+4. **Git LFS for media.** Every review run re-renders PNGs and MP4s; committed as plain files,
+   each version stays in history and a workspace reaches hundreds of MB in one campaign.
+   [templates/workspace.gitattributes](templates/workspace.gitattributes) tracks `*.png`,
+   `*.jpg`, `*.mp4`, `*.mov`, `*.mp3`, `*.wav`, and `*.aiff` with LFS. `/onboard` copies it to the
+   workspace as `.gitattributes` if missing, next to the `.gitignore` rules. Run
+   `git lfs install` once per machine before the first media commit.
 
 The MCP servers are declared in [.mcp.json](.mcp.json). The browser server is named
 `marketing-playwright` so it does not collide with another plugin's `playwright` server; its tools
@@ -264,7 +272,7 @@ Any deliverable change after C.3 goes through `amend-brief` (campaign-strategist
 | `video-foundation` | F.3c | video-producer | `brand-kit/`, `voice-guide.md` | `studio/video/` |
 | `campaign-roadmap` | F.4 | account-manager + campaign-strategist | all foundation docs | `foundation/roadmap.md`, `playbook.md` |
 | `campaign-brief` | C.1 | account-manager | `roadmap.md`, `playbook.md`, client input | `campaigns/NN/brief.md` |
-| `campaign-strategy` | C.2 | campaign-strategist | `brief.md`, foundation, `playbook.md` | `strategy.md` |
+| `campaign-strategy` | C.2 | campaign-strategist | `brief.md`, foundation (incl. `intake.md` margin and capacity), `playbook.md` | `strategy.md` (forecast, capacity check, unit economics) |
 | `content-calendar` | C.2 | campaign-strategist | `strategy.md`, `social-research.md` | `calendar.csv` |
 | `creative-brief` | C.3 | campaign-strategist | `strategy.md`, `calendar.csv` | `creative-brief.md` (frozen) |
 | `amend-brief` | C.4, on demand | campaign-strategist | the blocker, `creative-brief.md` | amendment + changelog |
@@ -280,7 +288,7 @@ Any deliverable change after C.3 goes through `amend-brief` (campaign-strategist
 | `tracking-check` | C.7 | analytics-reporter | `strategy.md` KPIs, `ads/utm-sheet.csv` | `tracking-check.md` |
 | `approval-pack` | C.8 | account-manager | everything in the campaign | `approval/index.html`, `approval/approval.md` |
 | `campaign-report` | C.9 | analytics-reporter | `strategy.md`, GA4, Ads Manager exports | `report.md`, `report.html` |
-| `close-campaign` | C.10 | analytics-reporter | `report.md`, `review-log.md`, deliverables | `summary.md`, `playbook.md` |
+| `close-campaign` | C.10 | analytics-reporter | `report.md`, `review-log.md`, `strategy.md`, `creative-brief.md` changelog, `approval/approval.md`, deliverables, `foundation/` | `summary.md`, `playbook.md`, retired-wording fixes in `foundation/` |
 
 ## Commands
 

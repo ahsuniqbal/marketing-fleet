@@ -38,7 +38,13 @@ Ask the human to place these at `ads/templates/meta-export.csv` and
 4. **Validate.** Re-run the copy-limit checker on the exported copy columns
    (`node ${CLAUDE_SKILL_DIR}/../write-copy/scripts/check-copy-limits.mjs` — the `write-copy`
    skill folder next to this one). Confirm file names in the sheets match
-   files on disk.
+   files on disk. Then check every ad set row against `plan.md` — **any failure stops the
+   export:**
+   - A retargeting / warm ad set with an empty `Custom Audiences` field. Imported blank, it
+     becomes another broad prospecting set that overlaps the others and breaks the test.
+   - A `Custom Audiences` or `Excluded Custom Audiences` name not listed in the plan's
+     *Audiences to create* and as a creation step in `launch-checklist.md` before import.
+   - Age range, location, start date, budget, or optimisation event differing from the plan.
 5. **Launch checklist.** Write `launch-checklist.md` for a person with no context: where each
    file is, how to import it, which images and videos to upload where, what to check in the
    preview, how to confirm budgets and dates, the pixel check, and the order to un-pause. Every
@@ -58,6 +64,9 @@ Ask the human to place these at `ads/templates/meta-export.csv` and
 - [ ] UTMs from `utm-sheet.csv`, unchanged
 - [ ] Copy limits re-checked on export
 - [ ] File names in sheets exist on disk
+- [ ] Every warm ad set has `Custom Audiences` filled, each name in the plan's *Audiences to create*
+- [ ] Every audience used has a creation step in `launch-checklist.md` before import
+- [ ] Ad set age, location, start date, budget, and optimisation event match `plan.md`
 - [ ] `launch-checklist.md` complete enough for someone with no context
 
 ## Failure modes
@@ -65,6 +74,7 @@ Ask the human to place these at `ads/templates/meta-export.csv` and
 - **Headers from memory.** Import fails, or worse, imports into the wrong fields.
 - **An active row.** Spend starts before client sign-off.
 - **Asset names that don't match.** The human uploads the wrong creative to the wrong ad.
+- **A blank audience field "to fill at launch".** It imports as broad targeting and spends.
 
 ## Handoff
 

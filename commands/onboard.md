@@ -15,7 +15,11 @@ Once per client, before any campaign work.
 2. Create `clients/<client>/foundation/`, `clients/<client>/campaigns/`, and
    `clients/<client>/studio/` if absent. Client folder names are kebab-case.
 3. If the workspace `.gitignore` lacks the rules in `templates/workspace.gitignore`, append them.
-   Raw footage must never be committed.
+   Raw footage must never be committed. If the workspace has no `.gitattributes`, copy
+   `templates/workspace.gitattributes` there; if it has one, append any missing lines. This
+   stores PNG, JPG, and audio/video renders in Git LFS. Check `git lfs version`; if Git LFS is
+   missing, tell the user to run `brew install git-lfs && git lfs install` before the first
+   commit of media.
 4. Copy the relevant file from `templates/` as each stage starts.
 5. If the workspace has no `.env`, copy this plugin's `.env.example` there as `.env` and tell the
    user to fill it and reload it (`set -a; source .env; set +a`) before restarting Claude.

@@ -31,6 +31,8 @@ You never change a deliverable. You find, evidence, and assign. The owner fixes 
 | **Voice** | Tone, do/don't, banned words from `voice-guide.md` |
 | **Claims** | Every claim allowed by the claims policy; proof exists where required; no superlatives the policy bans; platform ad policies (health, finance, before/after) |
 | **Brand kit** | Look at every PNG and at video frames: colours, type, logo usage and clear space match `brand-kit.md`. Grep `studio/` sources for hardcoded hex, px, or font names |
+| **Product read** | Looking at the render, a stranger can tell what the product is. No silhouette, pack, or prop that reads as another category — e.g. a bottle that reads as wine or beer, which also invites alcohol-policy review on ad platforms. Log it as `major` on paid creative |
+| **Product in use** | Paid creative whose message depends on the result ("a hot latte at home") shows the product in use or the finished result — the drink in a cup, the meal on a plate — not the pack alone |
 | **Spelling** | Copy, on-image text, captions, `.srt`, brand and product names |
 | **Specs** | Sizes and ratios per `CONVENTIONS.md`; video duration matches the brief; text inside safe zones |
 | **Copy limits** | `node ${CLAUDE_SKILL_DIR}/../write-copy/scripts/check-copy-limits.mjs <campaign>/copy` — the `write-copy` skill folder next to this one |
@@ -69,6 +71,7 @@ and the next run open them. Evidence outside the repo is lost when the session e
 - [ ] Copy-limit script run, output saved as evidence
 - [ ] Every evidence path cited in `review-log.md` exists under `review-evidence/run-N/`
 - [ ] Hardcoded-value grep run on `studio/`
+- [ ] Every paid visual: product recognisable as its category; in use or finished result shown where the message needs it
 - [ ] Every defect has evidence, severity, and one owner
 - [ ] Earlier runs untouched; history lines added
 - [ ] Verdict stated; escalated if run 3 fails
@@ -78,6 +81,7 @@ and the next run open them. Evidence outside the repo is lost when the session e
 - **Reviewing the source instead of the output.** The render is what the audience sees.
 - **Fixing it yourself.** Nobody verifies your fix, and the owner never learns.
 - **Checking only the 9:16.** The 1:1 crop is where text falls off.
+- **On-brand but unrecognisable.** Tokens all correct, and the product still reads as wine.
 - **Vague entries.** "Feels off-brand" cannot be fixed. Name the token, the line, the frame.
 
 ## Handoff

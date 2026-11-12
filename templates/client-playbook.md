@@ -51,6 +51,12 @@ Format: what — why it failed — campaign
 Recurring `brand-review` findings, so production stops making them.
 Format: issue — how to avoid — campaigns seen
 
+## Client decisions
+
+Gate decisions from C.2–C.8 that later campaigns inherit — budget carry-overs, naming, tooling,
+negatives, approved wordings, retired claims and their replacements.
+Format: decision — source (doc and gate) — campaign
+
 ## Open hypotheses
 
 Next things to test, with the campaign that should test them.

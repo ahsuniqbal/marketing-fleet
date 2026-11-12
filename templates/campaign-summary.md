@@ -29,6 +29,16 @@ By hook, format, audience, platform — with numbers.
 | Amendment | Cause |
 |---|---|
 
+## Gate decisions (C.2–C.8)
+
+| Decision | Source (strategy approval / brief changelog / approval pack) | Inherited by playbook |
+|---|---|---|
+
+## Retired wording
+
+| Old line (claim, price, wording) | Replacement | `grep` hits in foundation / playbook | Fixed or flagged to |
+|---|---|---|---|
+
 ## Reusable assets
 
 | Asset | Path | What it is |
